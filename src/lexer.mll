@@ -19,6 +19,10 @@ rule tokenize = parse
     | "%" {MOD}
     | "==" {EQ}
     | "!=" {NOTEQ}
+    | "<" {LT}
+    | "<=" {LE}
+    | ">" {GT}
+    | ">=" {GE}
     | "true" {BOOL(true)}
     | "false" {BOOL(false)}
     | number as n {INT (int_of_string n)}

@@ -1,4 +1,4 @@
-open Util
+open Syntax
 
 let rec eval expr = match expr with
   | Ast.String _ -> expr
@@ -17,3 +17,7 @@ let rec eval expr = match expr with
   | Ast.Mod (n,m) -> modd (eval n) (eval m)
   | Ast.Eq (n,m) -> eq (eval n) (eval m)
   | Ast.NotEq (n,m) -> noteq (eval n) (eval m) 
+  | Ast.Lt (n,m) -> lt (eval n) (eval m)
+  | Ast.Le (n,m) -> le (eval n) (eval m)
+  | Ast.Gt (n,m) -> gt (eval n) (eval m)
+  | Ast.Ge (n,m) -> ge (eval n) (eval m)

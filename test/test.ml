@@ -56,9 +56,25 @@ let boolean_test () =
     ("1.0 == 2.0","false");
     ("1.0 != 2.0","true");
     ("1.0 == 1.0","true");
+    ("1 < 2","true");
+    ("3 < 2","false");
+    ("2 <= 2","true");
+    ("3 <= 2","false");
+    ("2 > 1","true");
+    ("2 > 2","false");
+    ("2 >= 2","true");
+    ("2 >= 3","false");
+    ("3.0 < 2.0","false");
+    ("3.0 <= 2.0","false");
+    ("2.0 <= 2.0","true");
+    ("1.0 < 2.0","true");
+    ("2.0 > 1.1","true");
+    ("2.0 > 2.0","false");
+    ("2.0 >= 2.0","true");
+    ("2.0 >= 2.1","false");
+
   ] 
   in test_run test_case
-
 
 let suite = "Test" >::: [
     "four_arithmetic_operations_test" >:: (four_arithmetic_operations_test);

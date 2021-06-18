@@ -1,6 +1,6 @@
 %{
     open Ast
-    open Util
+    open Syntax
 %}
 
 %token <int> INT
@@ -9,10 +9,10 @@
 %token <bool> BOOL
 %token <float> FLOAT
 %token ADD SUB MUL DIV MOD
-%token EQ NOTEQ
+%token EQ NOTEQ LT LE GT GE
 %token LPAREN RPAREN
 %token EOL
-%left EQ  NOTEQ
+%left EQ  NOTEQ LT LE GT GE
 %left ADD SUB
 %left MUL DIV MOD
 %nonassoc UMINUS
@@ -41,6 +41,10 @@ expr :
         }
     | expr EQ expr {Eq($1,$3)}
     | expr NOTEQ expr {NotEq($1,$3)}
+    | expr LT expr {Lt($1,$3)}
+    | expr LE expr {Le($1,$3)}
+    | expr GT expr {Gt($1,$3)}
+    | expr GE expr {Ge($1,$3)} 
     | error { 
       let message =
         Printf.sprintf 
