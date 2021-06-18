@@ -23,6 +23,9 @@ rule tokenize = parse
     | "<=" {LE}
     | ">" {GT}
     | ">=" {GE}
+    | "if" {IF}
+    | "then" {THEN}
+    | "else" {ELSE}
     | "true" {BOOL(true)}
     | "false" {BOOL(false)}
     | number as n {INT (int_of_string n)}

@@ -21,3 +21,4 @@ let rec eval expr = match expr with
   | Ast.Le (n,m) -> le (eval n) (eval m)
   | Ast.Gt (n,m) -> gt (eval n) (eval m)
   | Ast.Ge (n,m) -> ge (eval n) (eval m)
+  | Ast.If (expr,true_expr,false_expr) -> eval (iff (eval expr) true_expr false_expr)

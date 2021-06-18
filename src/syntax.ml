@@ -103,3 +103,10 @@ let ge n m = match n with
 | Ast.Int _ -> Ast.Bool(number n >= number m)
 | Ast.Float _ -> Ast.Bool(float n >= float m)
 | _ -> err("Not Colled > Operater")
+
+let iff expr true_expr false_expr = match expr with
+    | Ast.Bool _ -> if (bool expr) then
+                    true_expr
+                    else
+                    false_expr
+    | _ -> err("Not Colled if")

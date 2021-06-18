@@ -16,3 +16,4 @@ type expr =
   | Le of expr * expr
   | Gt of expr* expr
   | Ge of expr * expr
+  | If of expr * expr * expr

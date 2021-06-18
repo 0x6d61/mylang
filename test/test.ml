@@ -76,9 +76,41 @@ let boolean_test () =
   ] 
   in test_run test_case
 
+let if_test () =
+    let test_case = [
+        ("if 1 == 1 then
+            true
+          else
+            false
+        ","true");
+        ("if 1 != 1 then
+            true
+          else
+            false
+        ","false");
+        ("if (13+26)*54 == 1 then
+            true
+          else
+            false
+        ","false");
+        ("if \"aaa\" == \"aaa\" then
+            \"aaaa\"
+          else
+            \"bb\"
+        ","aaaa");
+        ("if 1 < 3 then
+            \"aaaa\"
+          else
+            \"bb\"
+        ","aaaa");
+    ] in test_run test_case
+
 let suite = "Test" >::: [
     "four_arithmetic_operations_test" >:: (four_arithmetic_operations_test);
     "boolean_test" >:: (boolean_test);
+    "if_test" >:: (if_test);
   ]
 
 let _ = run_test_tt_main suite
+
+

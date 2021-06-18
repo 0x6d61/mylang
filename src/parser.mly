@@ -8,11 +8,13 @@
 %token <char> CHAR
 %token <bool> BOOL
 %token <float> FLOAT
+%token IF THEN ELSE
 %token ADD SUB MUL DIV MOD
 %token EQ NOTEQ LT LE GT GE
 %token LPAREN RPAREN
 %token EOL
-%left EQ  NOTEQ LT LE GT GE
+%left IF ELSE
+%left EQ NOTEQ LT LE GT GE
 %left ADD SUB
 %left MUL DIV MOD
 %nonassoc UMINUS
@@ -28,6 +30,9 @@ expr :
     | BOOL {Bool $1}
     | FLOAT {Float $1}
     | LPAREN expr RPAREN {$2}
+    | IF expr THEN expr ELSE expr {
+        If($2,$4,$6)
+    }
     | expr ADD expr {Add($1,$3)}
     | expr SUB expr {Sub($1,$3)}
     | expr MUL expr {Mul($1,$3)}
