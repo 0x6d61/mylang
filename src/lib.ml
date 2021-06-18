@@ -15,3 +15,5 @@ let rec eval expr = match expr with
   | Ast.Mul (n,m) -> mul (eval n ) (eval m)
   | Ast.Div (n,m) -> div (eval n) (eval m)
   | Ast.Mod (n,m) -> modd (eval n) (eval m)
+  | Ast.Eq (n,m) -> eq (eval n) (eval m)
+  | Ast.NotEq (n,m) -> noteq (eval n) (eval m) 

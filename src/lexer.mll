@@ -4,8 +4,8 @@ open Char
 }
 
 
-let float = '-'? ((['1'-'9']['0'-'9']*)|'0')('.'['0'-'9']['0'-'9']*)
-let number = '-' ? ((['1'-'9']['0'-'9']*)|'0')
+let float =((['1'-'9']['0'-'9']*)|'0')('.'['0'-'9']['0'-'9']*)
+let number =((['1'-'9']['0'-'9']*)|'0')
 let char = (['0'-'9']|['a'-'z']|['A'-'Z']|' '|'"'|['\'' '\\' '+' '*' '/' '-' '=' '.' '<' '>' '(' ')' '{' '}' ';' '^' ':' '\'' '|' '[' ']' '^' '%' '$'])
 let whitespace = ['\t' ' ' '\n' '\r']
 rule tokenize = parse
@@ -17,6 +17,8 @@ rule tokenize = parse
     | "*" {MUL}
     | "/" {DIV}
     | "%" {MOD}
+    | "==" {EQ}
+    | "!=" {NOTEQ}
     | "true" {BOOL(true)}
     | "false" {BOOL(false)}
     | number as n {INT (int_of_string n)}

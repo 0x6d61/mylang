@@ -66,3 +66,18 @@ let modd n m = match n with
       | _ -> Ast.Int (number  n mod mm))
   | _ -> err("Not Colled Mod Operater")
 
+let eq n m = match n with
+| Ast.Bool _ -> Ast.Bool(bool n = bool m)
+| Ast.Char _ -> Ast.Bool(char n = char m)
+| Ast.String _ -> Ast.Bool(string n = string m)
+| Ast.Int _ -> Ast.Bool(number n = number m)
+| Ast.Float _ -> Ast.Bool(float n = float m)
+| _ -> err("Not Colled Eq Operater")
+
+let noteq n m = match n with
+| Ast.Bool _ -> Ast.Bool(bool n <> bool m)
+| Ast.Char _ -> Ast.Bool(char n <> char m)
+| Ast.String _ -> Ast.Bool(string n <> string m)
+| Ast.Int _ -> Ast.Bool(number n <> number m)
+| Ast.Float _ -> Ast.Bool(float n <> float m)
+| _ -> err("Not Colled NotEq Operater")
