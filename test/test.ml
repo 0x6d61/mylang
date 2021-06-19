@@ -3,7 +3,7 @@ open Core
 
 let eval expr = let lexbuf = Lexing.from_string expr in
   let expr = Parser.f Lexer.tokenize lexbuf in
-  expr |> Core.Lib.eval |> Core.Util.to_string
+  expr |> Core.Lib.eval Core.Env.env |> Core.Util.to_string
 
 let rec test_run list =
   match list with

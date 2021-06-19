@@ -8,12 +8,12 @@
 %token <char> CHAR
 %token <bool> BOOL
 %token <float> FLOAT
-%token IF THEN ELSE
 %token ADD SUB MUL DIV MOD
 %token EQ NOTEQ LT LE GT GE
+%token IF THEN ELSE
+%token <string> IDENT
 %token LPAREN RPAREN
 %token EOL
-%left IF ELSE
 %left EQ NOTEQ LT LE GT GE
 %left ADD SUB
 %left MUL DIV MOD
@@ -21,15 +21,28 @@
 
 %start f
 %type <Ast.expr> f
+
 %%
+
 f: expr EOL {$1}
-expr :
-    INT {Int $1}
+
+var: IDENT {Ident($1)}
+
+args:
+    | LPAREN expr RPAREN {$2}
+    | INT {Int $1}
     | STRING {String $1}
     | CHAR {Char $1}
     | BOOL {Bool $1}
     | FLOAT {Float $1}
-    | LPAREN expr RPAREN {$2}
+
+
+params:
+    | args params {$1 :: $2}
+    | args {[$1]}
+expr:
+    | args {$1}
+    | var params  {CallFunc ($1,$2)}
     | IF expr THEN expr ELSE expr {
         If($2,$4,$6)
     }

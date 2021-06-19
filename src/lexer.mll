@@ -8,6 +8,7 @@ let float =((['1'-'9']['0'-'9']*)|'0')('.'['0'-'9']['0'-'9']*)
 let number =((['1'-'9']['0'-'9']*)|'0')
 let char = (['0'-'9']|['a'-'z']|['A'-'Z']|' '|'"'|['\'' '\\' '+' '*' '/' '-' '=' '.' '<' '>' '(' ')' '{' '}' ';' '^' ':' '\'' '|' '[' ']' '^' '%' '$'])
 let whitespace = ['\t' ' ' '\n' '\r']
+let ident = ['a'-'z'] ['A'-'Z' 'a'-'z' '_' '0'-'9']*
 rule tokenize = parse
     | whitespace+ {tokenize lexbuf}
     | "(" {LPAREN}
@@ -33,6 +34,7 @@ rule tokenize = parse
     | "\"" {STRING(string lexbuf)}
     | "'"(char as c)"'" {CHAR(c)}
     | eof {EOL}
+    | ident {IDENT (Lexing.lexeme lexbuf)}
 
 and string = parse
            | "\"" {""}

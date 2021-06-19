@@ -17,3 +17,5 @@ type expr =
   | Gt of expr* expr
   | Ge of expr * expr
   | If of expr * expr * expr
+  | CallFunc of expr * expr list
+  | Ident of string
