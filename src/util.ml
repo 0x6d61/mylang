@@ -8,6 +8,12 @@ let to_string expr = match expr with
   | Ast.Float f -> f |> string_of_float
   | Ast.Char c -> c |> escaped
   | Ast.Ident i -> i
+  | Ast.If (_,_,_) -> "if expr then 
+  expr
+  else
+  expr
+    "
+  | Ast.CallFunc(Ast.Ident(name),_) -> name
   | _ -> err("Not to Display")
 
 let print expr = (

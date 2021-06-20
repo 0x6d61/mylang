@@ -7,12 +7,16 @@ open Char
 let float =((['1'-'9']['0'-'9']*)|'0')('.'['0'-'9']['0'-'9']*)
 let number =((['1'-'9']['0'-'9']*)|'0')
 let char = (['0'-'9']|['a'-'z']|['A'-'Z']|' '|'"'|['\'' '\\' '+' '*' '/' '-' '=' '.' '<' '>' '(' ')' '{' '}' ';' '^' ':' '\'' '|' '[' ']' '^' '%' '$'])
-let whitespace = ['\t' ' ' '\n' '\r']
-let ident = ['a'-'z'] ['A'-'Z' 'a'-'z' '_' '0'-'9']*
+let whitespace = ['\t' ' ' '\r']
+let ident = ['a'-'z' '_']  ['A'-'Z' 'a'-'z' '_' '0'-'9']*
 rule tokenize = parse
     | whitespace+ {tokenize lexbuf}
+    | "\n" { Lexing.new_line lexbuf; tokenize lexbuf}
     | "(" {LPAREN}
     | ")" {RPAREN}
+    | "{" {LBRACES}
+    | "}" {RBRACES}
+    | "=" {RET}
     | "+" {ADD}
     | "-" {SUB}
     | "*" {MUL}
@@ -24,7 +28,10 @@ rule tokenize = parse
     | "<=" {LE}
     | ">" {GT}
     | ">=" {GE}
+    | "->" {ALLOW}
+    | "fn" {FN}
     | "if" {IF}
+    | "in" {IN}
     | "then" {THEN}
     | "else" {ELSE}
     | "true" {BOOL(true)}
@@ -33,8 +40,8 @@ rule tokenize = parse
     | float as n {FLOAT (float_of_string n)}
     | "\"" {STRING(string lexbuf)}
     | "'"(char as c)"'" {CHAR(c)}
-    | eof {EOL}
     | ident {IDENT (Lexing.lexeme lexbuf)}
+    | eof {EOF}
 
 and string = parse
            | "\"" {""}

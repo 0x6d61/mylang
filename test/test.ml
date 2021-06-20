@@ -3,14 +3,13 @@ open Core
 
 let eval expr = let lexbuf = Lexing.from_string expr in
   let expr = Parser.f Lexer.tokenize lexbuf in
-  expr |> Core.Lib.eval Core.Env.env |> Core.Util.to_string
-
+expr |> List.map (Core.Lib.eval Core.Env.env) |> List.map Core.Util.to_string
 let rec test_run list =
   match list with
   | [] -> ()
   | x::xs -> let (expr,ans) = x in (
       print_string (expr ^ "\n");
-      (assert_equal (eval expr) ans);test_run xs)
+      (assert_equal (eval expr) [ans]);test_run xs)
 
 let four_arithmetic_operations_test () = 
   let test_case = [("5", "5");
@@ -104,11 +103,23 @@ let if_test () =
             \"bb\"
         ","aaaa");
     ] in test_run test_case
-
+let fn_test () = 
+    let test_case = [
+        ("fn add x -> {
+            x + 3
+        }
+        add 3","6");
+        ("fn sub x -> {
+            10
+        }
+        add 3","7");
+    ]
+    in test_run test_case
 let suite = "Test" >::: [
     "four_arithmetic_operations_test" >:: (four_arithmetic_operations_test);
     "boolean_test" >:: (boolean_test);
     "if_test" >:: (if_test);
+    "fn_test" >:: (fn_test);
   ]
 
 let _ = run_test_tt_main suite

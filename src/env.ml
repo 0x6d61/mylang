@@ -7,8 +7,8 @@ type env_filed = {
   body: Ast.expr;
 }
 
-(* env_filed list *)
-let env = []
+(* env_filed list ref*)
+let env :env_filed list = []
 let build_in_func = [
     ("print",print);
 ]
@@ -24,6 +24,7 @@ let set_vargs args body env =
       else
         {ident_name = (List.hd arg) ; args = [];body = (List.hd by)} ::  func (List.tl arg) (List.tl by)
     in func args body 
+
 
 let rec get_env var env =
   match env with

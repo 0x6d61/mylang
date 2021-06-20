@@ -18,4 +18,7 @@ type expr =
   | Ge of expr * expr
   | If of expr * expr * expr
   | CallFunc of expr * expr list
+  | SetFunc of expr * expr list * expr
+  | SetVar of expr * expr * expr
+  | Env of string list
   | Ident of string
