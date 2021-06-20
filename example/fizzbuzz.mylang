@@ -1,0 +1,20 @@
+fn fizzbuzz n -> {
+    if n % 15 == 0 then
+        print "FizzBuzz"
+    else if n % 3 == 0 then
+        print "Fizz"
+    else if n % 5 == 0 then
+        print "Buzz"
+    else
+        print n
+}
+
+fn fizzbuzz_run s e -> {
+    if s == e then
+        -1
+    else
+       _ = fizzbuzz s in fizzbuzz_run (s+1) e
+}
+
+_ = fizzbuzz_run 1 101 in 
+a = 2 in print a
