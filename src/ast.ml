@@ -20,5 +20,10 @@ type expr =
   | CallFunc of expr * expr list
   | SetFunc of expr * expr list * expr
   | SetVar of expr * expr * expr
-  | Env of string list
   | Ident of string
+  | Env of env_filed list
+and env_filed = {
+  ident_name: string;
+  args: expr list;
+  body: expr;
+}

@@ -1,14 +1,9 @@
 open Syntax
 open Util
-
-type env_filed = {
-  ident_name: string;
-  args: Ast.expr list;
-  body: Ast.expr;
-}
+open Ast
 
 (* env_filed list ref*)
-let env :env_filed list = []
+let env :Ast.env_filed list = []
 let build_in_func = [
     ("print",print);
 ]
