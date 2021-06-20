@@ -1,6 +1,7 @@
 open Syntax
 open Env
 open Util
+open Error
 
 let rec eval env expr = match expr with
   | Ast.String _ -> expr
@@ -33,7 +34,7 @@ let rec eval env expr = match expr with
       let (v_args,body) = get_func (func_name |> to_string) env
       in let env1 = set_vargs  (List.map (fun x -> to_string x) v_args) (List.map (eval env) args) env in
       eval env1 body
-    with Error _ -> let func = 
+    with NameError _ -> let func = 
                       get_build_in_func (func_name |> to_string) build_in_func
       in 
       func (List.map (eval env) args)

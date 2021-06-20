@@ -1,5 +1,4 @@
-
-exception Error of string
+open Error
 
 let err s = raise (Error s)
 

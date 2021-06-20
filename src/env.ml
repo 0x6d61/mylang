@@ -1,4 +1,4 @@
-open Syntax
+open Error
 open Util
 open Ast
 
@@ -12,7 +12,7 @@ let add_env name args body env =  {ident_name = name;args = args;body = body;} :
 
 let set_vargs args body env =
   if List.length args <> List.length body then
-    err("TypeError: expected "^ (List.length args |> string_of_int) ^ "arguments got " ^ (List.length body |> string_of_int))
+    type_err("TypeError: expected "^ (List.length args |> string_of_int) ^ "arguments got " ^ (List.length body |> string_of_int))
   else
     let rec func arg by = if List.length arg = 0 then
         env
@@ -23,7 +23,7 @@ let set_vargs args body env =
 
 let rec get_env var env =
   match env with
-  | [] -> err("NameError: name  '" ^ var ^ "' is not defined")
+  | [] -> name_err("NameError: name  '" ^ var ^ "' is not defined")
   | x::xs -> if x.ident_name = var then
       x.body
     else
@@ -31,7 +31,7 @@ let rec get_env var env =
 
 let rec get_func var env = 
     match env with 
-  | [] -> err("NameError: name  '" ^ var ^ "' is not defined")
+  | [] -> name_err("NameError: name  '" ^ var ^ "' is not defined")
   | x::xs -> if x.ident_name = var then
       (x.args,x.body)
     else
@@ -39,7 +39,7 @@ let rec get_func var env =
 
 let get_build_in_func func_name list =
     let rec func lst = match lst with
-        | [] -> err("NameError: name  '" ^ func_name ^ "' is not defined")
+        | [] -> name_err("NameError: name  '" ^ func_name ^ "' is not defined")
         | (f,body)::fs -> if f = func_name then
                             body
                         else 

@@ -18,10 +18,13 @@ let rec eval_map env expr = match expr with
 
 
 let () = if Array.length Sys.argv > 0 then
+  try
     let file = read_file Sys.argv.(1) in 
     let lexbuf = Lexing.from_string file in
     let expr = Parser.f Lexer.tokenize lexbuf in 
-    let _ = eval_map Core.Env.env expr in
-    ()
+    let _ = eval_map Core.Env.env expr in ()
+  with Core.Error.Error msg -> (print_newline (); print_string msg; print_newline ();)
+  | Core.Error.NameError msg -> (print_newline (); print_string msg; print_newline ();)
+  | Core.Error.TypeError msg -> (print_newline (); print_string msg; print_newline ();)
   else
     ()
