@@ -1,6 +1,5 @@
 %{
     open Ast
-    open Syntax
 %}
 
 //基本的な値
@@ -81,12 +80,7 @@ expr:
     | expr MUL expr {Mul($1,$3)}
     | expr DIV expr {Div($1,$3)}
     | expr MOD expr {Mod($1,$3)}
-    | SUB expr %prec UMINUS {
-        match $2 with
-        | Ast.Int _ -> Ast.Int(- (number $2))
-        | Ast.Float _ -> Ast.Float(-. (float $2))
-        | _ -> err("Parser Error")
-        }
+    | SUB expr %prec UMINUS { Uminus($2) }
     | expr EQ expr {Eq($1,$3)}
     | expr NOTEQ expr {NotEq($1,$3)}
     | expr LT expr {Lt($1,$3)}
