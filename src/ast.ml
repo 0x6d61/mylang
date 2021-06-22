@@ -16,7 +16,8 @@ type expr =
   | Le of expr * expr
   | Gt of expr* expr
   | Ge of expr * expr
-  | If of expr * expr * expr
+  | If of expr * expr list * expr
+  | Else of expr list
   | CallFunc of expr * expr list
   | SetFunc of expr * expr list * expr list
   | SetVar of expr * expr * expr

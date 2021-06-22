@@ -80,31 +80,33 @@ let boolean_test () =
 
 let if_test () =
   let test_case = [
-    ("if 1 == 1 then
+    ("if 1 == 1 {
             true
-          else
+          }else{
             false
+          }
         ","true");
-    ("if 1 != 1 then
-            true
-          else
-            false
-        ","false");
-    ("if (13+26)*54 == 1 then
-            true
-          else
-            false
-        ","false");
-    ("if \"aaa\" == \"aaa\" then
-            \"aaaa\"
-          else
-            \"bb\"
-        ","aaaa");
-    ("if 1 < 3 then
-            \"aaaa\"
-          else
-            \"bb\"
-        ","aaaa");
+    ("if 1 != 1 {
+      true
+    } else {
+      false
+    }","false");
+    ("if (13+26)*54 == 1 {
+      true
+    }else{
+      false
+    }","false");
+    ("if \"aaa\" == \"aaa\" {
+      3*3*4
+      \"aaaa\"
+    }else{
+      \"bb\"
+    }","aaaa");
+    ("if 1 < 3 {
+      \"aaaa\"
+    }else{
+      \"bb\"
+    }","aaaa");
   ] in test_run Core.Env.env test_case
 let suite = "Test" >::: [
     "four_arithmetic_operations_test" >:: (four_arithmetic_operations_test);

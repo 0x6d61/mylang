@@ -36,17 +36,15 @@
 %token FN
 %token IN
 %token IF
-%token THEN
 %token ELSE
 
 %token EOF
 
-
-%right prec_if
-%left EQ NOTEQ LT LE GT GE
+%nonassoc EQ NOTEQ
+%left LT LE GT GE
 %left ADD SUB
 %left MUL DIV MOD
-%nonassoc UMINUS
+%right UMINUS
 
 %start f
 %type <Ast.expr list> f
@@ -66,9 +64,26 @@ params:
 func_params:
     | var COMMA func_params {$1 :: $3}
     | var {[$1]}
+func:
+    | var LPAREN params RPAREN {CallFunc ($1,$3)}
+    | var LPAREN RPAREN {CallFunc($1,[])}
+    | FN v = var LPAREN p=func_params RPAREN ALLOW LBRACES e=expr* RBRACES {SetFunc(v,p,e)}
+    | FN v = var LPAREN RPAREN ALLOW LBRACES e=expr* RBRACES {SetFunc(v,[],e)}
+
+elseif:
+    | ELSE iff { Else([$2]) }
+    | ELSE LBRACES expr* RBRACES { Else($3) }
+iff:
+    |IF e1 = expr LBRACES e2 = expr* RBRACES e3 = elseif  {
+        If(e1,e2,e3)
+    }
+
 
 expr:
     | var {$1}
+    | iff { $1 }
+    | var RET expr IN expr {SetVar($1,$3,$5)}
+    | func { $1 }
     | LPAREN expr RPAREN {$2}
     | INT {Int $1}
     | STRING {String $1}
@@ -81,20 +96,13 @@ expr:
     | expr DIV expr {Div($1,$3)}
     | expr MOD expr {Mod($1,$3)}
     | SUB expr %prec UMINUS { Uminus($2) }
+    | ADD expr %prec UMINUS {Add($2,Ast.Int(0))}
     | expr EQ expr {Eq($1,$3)}
     | expr NOTEQ expr {NotEq($1,$3)}
     | expr LT expr {Lt($1,$3)}
     | expr LE expr {Le($1,$3)}
     | expr GT expr {Gt($1,$3)}
     | expr GE expr {Ge($1,$3)} 
-    | IF e1 = expr THEN e2 = expr ELSE e3 = expr %prec prec_if {
-        If(e1,e2,e3)
-    }
-    | var RET expr IN expr {SetVar($1,$3,$5)}
-    | var LPAREN params RPAREN {CallFunc ($1,$3)}
-    | var LPAREN RPAREN {CallFunc($1,[])}
-    | FN v = var LPAREN p=func_params RPAREN ALLOW LBRACES e=expr* RBRACES {SetFunc(v,p,e)}
-    | FN v = var LPAREN RPAREN ALLOW LBRACES e=expr* RBRACES {SetFunc(v,[],e)}
     | error { 
       let message =
         Printf.sprintf 

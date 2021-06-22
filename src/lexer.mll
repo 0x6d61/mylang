@@ -33,7 +33,6 @@ rule tokenize = parse
     | "fn" {FN}
     | "if" {IF}
     | "in" {IN}
-    | "then" {THEN}
     | "else" {ELSE}
     | "true" {BOOL(true)}
     | "false" {BOOL(false)}

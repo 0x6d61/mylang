@@ -51,17 +51,20 @@ let set_func_test () =
       x + y
     }","add");
     ("fn fizzbuzz(s,e) -> {
-    if s == e then
+    if s == e {
         -1
-    else
-       _ = if s % 15 == 0 then
-        print(\"FizzBuzz\")
-    else if s % 3 == 0 then
-        print(\"Fizz\")
-    else if s % 5 == 0 then
-        print(\"Buzz\")
-    else
-        print(s) in fizzbuzz(s+1,e)
+    } else {
+       if s % 15 == 0 {
+         print(\"FizzBuzz\")
+       }else if s % 3 == 0 {
+          print(\"Fizz\")
+       }else if s % 5 == 0 {
+          print(\"Buzz\")
+       }else{
+         print(s)
+         fizzbuzz(s+1,e)
+        }
+    }
 }
       ","fizzbuzz");
       ("fn wei() -> {
