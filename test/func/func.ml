@@ -64,6 +64,9 @@ let set_func_test () =
         print(s) in fizzbuzz(s+1,e)
 }
       ","fizzbuzz");
+      ("fn wei() -> {
+        \"wei\"  
+      }","wei")
   ]
   in set_func_and_val_test_run test_case
 
