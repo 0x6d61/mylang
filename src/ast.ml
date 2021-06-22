@@ -20,7 +20,8 @@ type expr =
   | Else of expr list
   | CallFunc of expr * expr list
   | SetFunc of expr * expr list * expr list
-  | SetVar of expr * expr * expr
+  | LetInVar of expr * expr * expr
+  | LetVar of expr * expr
   | Ident of string
   | Env of env_filed list
 and env_filed = {

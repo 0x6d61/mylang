@@ -1,7 +1,8 @@
 fn sum (s,e) -> {
-    if s == e then
+    if s == e {
         e
-    else
+    }else {
         s + sum(s+1,e)
+    }
 }
 print(sum(1,10))

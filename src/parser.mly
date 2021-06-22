@@ -33,12 +33,14 @@
 %token RBRACES 
 //予約語
 
+%token LET
 %token FN
 %token IN
 %token IF
 %token ELSE
 
 %token EOF
+
 
 %nonassoc EQ NOTEQ
 %left LT LE GT GE
@@ -82,7 +84,8 @@ iff:
 expr:
     | var {$1}
     | iff { $1 }
-    | var RET expr IN expr {SetVar($1,$3,$5)}
+    | LET var RET expr IN expr {LetInVar($2,$4,$6)}
+    | LET var RET expr {LetVar($2,$4)}
     | func { $1 }
     | LPAREN expr RPAREN {$2}
     | INT {Int $1}

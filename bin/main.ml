@@ -11,7 +11,7 @@ let eval env expr =
 
 let rec eval_map env expr = match expr with 
   [] -> Core.Ast.Bool(true)
-  | e::es -> let result = eval env e in
+  | e::es -> let result =  e |> Core.Lib.eval env in
             match result with
             | Core.Ast.Env(ret_env) ->  eval_map ret_env es
             | _ -> eval_map env es

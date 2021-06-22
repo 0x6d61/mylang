@@ -104,9 +104,35 @@ let func_call_test () =
     ("sqrt(2)","4");
   ] in test_run test_env test_case
 
+
+let set_let_test () = 
+  let test_case = [
+    ("let a = 1","a");
+    ("let b = (1+3)*14*12","b");
+    ("let c = true","c");
+    ("let c = if 1 == 1 {true}else{false}",
+    "c");
+    ("let c = if 1 == 3 {true}else{false}",
+    "c")
+  ] in set_func_and_val_test_run test_case
+
+let set_let_in_test () = 
+  let test_case = [
+    ("let a = 1 in a","1");
+    ("let b = true in b","true");
+    ("let c = if 1 != 3 {
+        \"aaa\"
+    }else{
+      \"bbbb\"
+    } in c","aaa");
+    ("let d = 3*3*4 in d","36")
+  ]
+    in test_run Core.Env.env test_case 
 let suite = "Func Test" >::: [
     "set_func_test" >:: (set_func_test);
     "func_call_test" >:: (func_call_test);
+    "set_let_test" >:: (set_let_test);
+    "set_let_in_test" >:: (set_let_in_test);
   ]
 
 let _ = run_test_tt_main suite

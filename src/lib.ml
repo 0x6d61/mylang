@@ -31,7 +31,8 @@ let rec eval env expr = match expr with
       eval env false_expr
   | Ast.Else else_expr -> else_expr |> List.map (eval env) |> List.rev |> List.hd
   | Ast.Ident n  -> List.hd(get_env n env) 
-  | Ast.SetVar (var,expr,expr2) -> let env2 = add_env (var |> to_string) [] [(eval env expr)] env in eval env2 expr2
+  | Ast.LetInVar (var,expr,expr2) -> let env2 = add_env (var |> to_string) [] [(eval env expr)] env in eval env2 expr2
+  | Ast.LetVar (var,expr) -> let env2 = add_env (var |> to_string) [] [eval env expr] env in Ast.Env(env2) 
   | Ast.SetFunc (func_name,args,expr) -> let env2 = 
                                            add_env (func_name |> to_string) args expr env in Ast.Env(env2)
   | Ast.CallFunc (func_name,args) -> try 
