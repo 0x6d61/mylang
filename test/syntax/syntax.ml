@@ -1,40 +1,18 @@
 open OUnit
 open Core
 (* eval *)
-let eval expr = let lexbuf = Lexing.from_string expr in
+
+let eval env expr = let lexbuf = Lexing.from_string expr in
   let expr = Parser.f Lexer.tokenize lexbuf in
-  expr |> List.map (Core.Lib.eval Core.Env.env) |> List.map Core.Util.to_string
+  expr |> List.map (Core.Lib.eval env) |> List.map Core.Util.to_string
+
 (* テスト回す関数 *)
-let rec test_run list =
+let rec test_run env list =
   match list with
   | [] -> ()
   | x::xs -> let (expr,ans) = x in (
       print_string (expr ^ "\n");
-      (assert_equal (eval expr) [ans]);test_run xs)
-(* Ast.Env を取得したいときの eval*)
-let eval2 expr  = let lexbuf = Lexing.from_string expr in
-  let expr = Parser.f Lexer.tokenize lexbuf in
-  expr |> List.map (Core.Lib.eval Core.Env.env)
-
-(* envから名前が存在するか *)
-let rec get_env var env = match env with
-  | [] -> false
-  | x::xs -> if x.Ast.ident_name = var then
-      true
-    else
-      get_env var xs
-(* 変数とか関数が定義されているか *)
-let rec func_test_run list = match list with
-  | [] -> ()
-  | x::xs -> let (expr,ans) = x in 
-    let result = eval2 expr in
-    match result with
-    | [] -> ()
-    | r::_ -> match r with
-      | Ast.Env(n) -> (print_string (expr ^ "\n");
-                       (assert_equal (get_env ans n) true);
-                       func_test_run xs)
-      | _ -> assert_bool "error" false
+      (assert_equal (eval env expr ) [ans]);test_run env xs)
 
 let four_arithmetic_operations_test () = 
   let test_case = [("5", "5");
@@ -60,7 +38,7 @@ let four_arithmetic_operations_test () =
                    ("1.0+2.3", "3.3");
                    ("2.3*1.0", "2.3");
                    ("3.2-5.8", "-2.6")] 
-  in test_run test_case
+  in test_run Core.Env.env test_case
 
 let boolean_test () = 
   let test_case = [
@@ -98,7 +76,7 @@ let boolean_test () =
     ("2.0 >= 2.1","false");
 
   ] 
-  in test_run test_case
+  in test_run Core.Env.env test_case
 
 let if_test () =
   let test_case = [
@@ -127,40 +105,11 @@ let if_test () =
           else
             \"bb\"
         ","aaaa");
-  ] in test_run test_case
-let fn_test () = 
-  let test_case = [
-    ("fn add(x) -> {
-            x + 3
-        }","add");
-    ("fn sub(x) -> {
-            10-3
-        }","sub");
-    ("fn add(x,y) -> {
-      x + y
-    }","add");
-    ("fn fizzbuzz(s,e) -> {
-    if s == e then
-        -1
-    else
-       _ = if s % 15 == 0 then
-        print(\"FizzBuzz\")
-    else if s % 3 == 0 then
-        print(\"Fizz\")
-    else if s % 5 == 0 then
-        print(\"Buzz\")
-    else
-        print(s) in fizzbuzz(s+1,e)
-}
-      ","fizzbuzz");
-  ]
-  in func_test_run test_case
+  ] in test_run Core.Env.env test_case
 let suite = "Test" >::: [
     "four_arithmetic_operations_test" >:: (four_arithmetic_operations_test);
     "boolean_test" >:: (boolean_test);
     "if_test" >:: (if_test);
-    "fn_test" >:: (fn_test);
-
   ]
 
 let _ = run_test_tt_main suite

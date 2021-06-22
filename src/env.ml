@@ -10,20 +10,21 @@ let build_in_func = [
 
 let add_env name args body env =  {ident_name = name;args = args;body = body;} :: env
 
-let set_vargs args body env =
-  if List.length args <> List.length body then
-    type_err("TypeError: expected "^ (List.length args |> string_of_int) ^ "arguments got " ^ (List.length body |> string_of_int))
+(* 仮引数に実引数を割当 *)
+let set_vargs vargs args env =
+  if List.length vargs <> List.length args then
+    type_err("TypeError: expected "^ (List.length vargs |> string_of_int) ^ " arguments got " ^ (List.length args |> string_of_int))
   else
-    let rec func arg by = if List.length arg = 0 then
+    let rec func varg arg = if List.length varg = 0 then
         env
       else
-        {ident_name = (List.hd arg) ; args = [];body = (List.hd by)} ::  func (List.tl arg) (List.tl by)
-    in func args body 
+        {ident_name = (List.hd varg) ; args = [];body = [(List.hd arg)]} ::  func (List.tl varg) (List.tl arg)
+    in func vargs args
 
 
 let rec get_env var env =
   match env with
-  | [] -> name_err("NameError: name  '" ^ var ^ "' is not defined")
+  | [] -> name_err("NameError: name '" ^ var ^ "' is not defined")
   | x::xs -> if x.ident_name = var then
       x.body
     else
@@ -31,7 +32,7 @@ let rec get_env var env =
 
 let rec get_func var env = 
     match env with 
-  | [] -> name_err("NameError: name  '" ^ var ^ "' is not defined")
+  | [] -> name_err("NameError: name '" ^ var ^ "' is not defined")
   | x::xs -> if x.ident_name = var then
       (x.args,x.body)
     else
@@ -39,7 +40,7 @@ let rec get_func var env =
 
 let get_build_in_func func_name list =
     let rec func lst = match lst with
-        | [] -> name_err("NameError: name  '" ^ func_name ^ "' is not defined")
+        | [] -> name_err("NameError: name '" ^ func_name ^ "' is not defined")
         | (f,body)::fs -> if f = func_name then
                             body
                         else 

@@ -18,12 +18,12 @@ type expr =
   | Ge of expr * expr
   | If of expr * expr * expr
   | CallFunc of expr * expr list
-  | SetFunc of expr * expr list * expr
+  | SetFunc of expr * expr list * expr list
   | SetVar of expr * expr * expr
   | Ident of string
   | Env of env_filed list
 and env_filed = {
   ident_name: string;
   args: expr list;
-  body: expr;
+  body: expr list;
 }

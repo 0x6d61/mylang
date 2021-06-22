@@ -26,14 +26,15 @@ let rec eval env expr = match expr with
   | Ast.Gt (n,m) -> gt (eval env n) (eval env m)
   | Ast.Ge (n,m) -> ge (eval env n) (eval env m)
   | Ast.If (expr,true_expr,false_expr) -> eval env ( iff (eval env expr) true_expr false_expr)
-  | Ast.Ident n  -> get_env n env
-  | Ast.SetVar (var,expr,expr2) -> let env2 = add_env (var |> to_string) [] (eval env expr) env in eval env2 expr2
+  | Ast.Ident n  -> List.hd(get_env n env) 
+  | Ast.SetVar (var,expr,expr2) -> let env2 = add_env (var |> to_string) [] [(eval env expr)] env in eval env2 expr2
   | Ast.SetFunc (func_name,args,expr) -> let env2 = 
                                            add_env (func_name |> to_string) args expr env in Ast.Env(env2)
   | Ast.CallFunc (func_name,args) -> try 
       let (v_args,body) = get_func (func_name |> to_string) env
       in let env1 = set_vargs  (List.map (fun x -> to_string x) v_args) (List.map (eval env) args) env in
-      eval env1 body
+      let r = List.map (eval env1) body in
+        List.hd (List.rev r)
     with NameError _ -> let func = 
                       get_build_in_func (func_name |> to_string) build_in_func
       in 

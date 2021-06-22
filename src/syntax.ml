@@ -4,22 +4,22 @@ let err s = raise (Error s)
 
 let number value = match value with
   | Ast.Int n -> n
-  |_ -> err("TypeError: Not Integer")
+  |_ -> type_err("TypeError: Not Integer")
 
 let bool value = match value with
   | Ast.Bool n -> n
-  | _ -> err("TypeError: Not Boolean")
+  | _ -> type_err("TypeError: Not Boolean")
 
 let string value = match value with
   | Ast.String n -> n
-  | _ -> err("TypeError: Not String")
+  | _ -> type_err("TypeError: Not String")
 let char value = match value with
   | Ast.Char n -> n
-  | _ -> err("TypeError: Not Char")
+  | _ -> type_err("TypeError: Not Char")
 
 let float value = match value with
   | Ast.Float n -> n
-  | _ -> err("TypeError: Not Float")
+  | _ -> type_err("TypeError: Not Float")
 
   let add n m =
   match n with

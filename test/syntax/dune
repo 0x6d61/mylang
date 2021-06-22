@@ -1,5 +1,5 @@
 (test
-(name test)
+(name syntax)
 (libraries 
 core
 oUnit)

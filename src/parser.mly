@@ -32,11 +32,13 @@
 %token LBRACES
 %token RBRACES 
 //予約語
+
 %token FN
 %token IN
 %token IF
 %token THEN
 %token ELSE
+
 %token EOF
 
 
@@ -90,7 +92,9 @@ expr:
     }
     | var RET expr IN expr {SetVar($1,$3,$5)}
     | var LPAREN params RPAREN {CallFunc ($1,$3)}
-    | FN v = var LPAREN p=func_params RPAREN ALLOW LBRACES e=expr RBRACES {SetFunc(v,p,e)}
+    | var LPAREN RPAREN {CallFunc($1,[])}
+    | FN v = var LPAREN p=func_params RPAREN ALLOW LBRACES e=expr* RBRACES {SetFunc(v,p,e)}
+    | FN v = var LPAREN RPAREN ALLOW LBRACES e=expr* RBRACES {SetFunc(v,[],e)}
     | error { 
       let message =
         Printf.sprintf 
