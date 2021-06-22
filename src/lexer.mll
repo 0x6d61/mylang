@@ -29,6 +29,7 @@ rule tokenize = parse
     | ">" {GT}
     | ">=" {GE}
     | "->" {ALLOW}
+    | "," {COMMA}
     | "fn" {FN}
     | "if" {IF}
     | "in" {IN}

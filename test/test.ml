@@ -130,24 +130,27 @@ let if_test () =
   ] in test_run test_case
 let fn_test () = 
   let test_case = [
-    ("fn add x -> {
+    ("fn add(x) -> {
             x + 3
         }","add");
-    ("fn sub x -> {
+    ("fn sub(x) -> {
             10-3
         }","sub");
-    ("fn fizzbuzz s e -> {
+    ("fn add(x,y) -> {
+      x + y
+    }","add");
+    ("fn fizzbuzz(s,e) -> {
     if s == e then
         -1
     else
-       _ = (if s % 15 == 0 then
-        print \"FizzBuzz\"
+       _ = if s % 15 == 0 then
+        print(\"FizzBuzz\")
     else if s % 3 == 0 then
-        print \"Fizz\"
+        print(\"Fizz\")
     else if s % 5 == 0 then
-        print \"Buzz\"
+        print(\"Buzz\")
     else
-        print s) in fizzbuzz (s+1) e
+        print(s) in fizzbuzz(s+1,e)
 }
       ","fizzbuzz");
   ]

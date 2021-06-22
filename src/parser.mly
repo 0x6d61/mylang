@@ -22,9 +22,10 @@
 %token LE 
 %token GT 
 %token GE
+//記号
 %token RET
-
 %token ALLOW
+%token COMMA
 //括弧
 %token LPAREN
 %token RPAREN
@@ -54,7 +55,17 @@ f: expr* EOF {$1}
 
 var: IDENT {Ident($1)}
 
-args:
+params:
+    | expr COMMA params
+        {$1 :: $3}
+    | expr
+         {[$1]}
+
+func_params:
+    | var COMMA func_params {$1 :: $3}
+    | var {[$1]}
+
+expr:
     | var {$1}
     | LPAREN expr RPAREN {$2}
     | INT {Int $1}
@@ -62,19 +73,6 @@ args:
     | CHAR {Char $1}
     | BOOL {Bool $1}
     | FLOAT {Float $1}
-
-params:
-    | args params
-        {$1 :: $2}
-    | args 
-         {[$1]}
-
-func_params:
-    | var func_params {$1 :: $2}
-    | var {[$1]}
-
-expr:
-    | args { $1 }
     | expr ADD expr {Add($1,$3)}
     | expr SUB expr {Sub($1,$3)}
     | expr MUL expr {Mul($1,$3)}
@@ -91,8 +89,8 @@ expr:
         If(e1,e2,e3)
     }
     | var RET expr IN expr {SetVar($1,$3,$5)}
-    | var params {CallFunc ($1,$2)}
-    | FN var func_params ALLOW LBRACES expr RBRACES {SetFunc($2,$3,$6)}
+    | var LPAREN params RPAREN {CallFunc ($1,$3)}
+    | FN v = var LPAREN p=func_params RPAREN ALLOW LBRACES e=expr RBRACES {SetFunc(v,p,e)}
     | error { 
       let message =
         Printf.sprintf 
