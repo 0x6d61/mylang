@@ -7,7 +7,6 @@ let rec eval env expr = match expr with
   | Ast.String _ -> expr
   | Ast.Int  _ -> expr
   | Ast.Bool  _-> expr
-  | Ast.Char  _-> expr
   | Ast.Float  _-> expr
   | Ast.Uminus n -> (match n with
       | Ast.Int _ -> Ast.Int (-(number n))

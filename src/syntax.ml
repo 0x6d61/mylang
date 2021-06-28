@@ -13,9 +13,6 @@ let bool value = match value with
 let string value = match value with
   | Ast.String n -> n
   | _ -> type_err("TypeError: Not String")
-let char value = match value with
-  | Ast.Char n -> n
-  | _ -> type_err("TypeError: Not Char")
 
 let float value = match value with
   | Ast.Float n -> n
@@ -57,7 +54,6 @@ let modd n m = match n with
 
 let eq n m = match n with
 | Ast.Bool _ -> Ast.Bool(bool n = bool m)
-| Ast.Char _ -> Ast.Bool(char n = char m)
 | Ast.String _ -> Ast.Bool(string n = string m)
 | Ast.Int _ -> Ast.Bool(number n = number m)
 | Ast.Float _ -> Ast.Bool(float n = float m)
@@ -65,7 +61,6 @@ let eq n m = match n with
 
 let noteq n m = match n with
 | Ast.Bool _ -> Ast.Bool(bool n <> bool m)
-| Ast.Char _ -> Ast.Bool(char n <> char m)
 | Ast.String _ -> Ast.Bool(string n <> string m)
 | Ast.Int _ -> Ast.Bool(number n <> number m)
 | Ast.Float _ -> Ast.Bool(float n <> float m)
@@ -73,7 +68,6 @@ let noteq n m = match n with
 
 let lt n m = match n with
 | Ast.Bool _ -> Ast.Bool(bool n < bool m)
-| Ast.Char _ -> Ast.Bool(char n < char m)
 | Ast.String _ -> Ast.Bool(string n < string m)
 | Ast.Int _ -> Ast.Bool(number n < number m)
 | Ast.Float _ -> Ast.Bool(float n < float m)
@@ -81,7 +75,6 @@ let lt n m = match n with
 
 let le n m = match n with
 | Ast.Bool _ -> Ast.Bool(bool n <= bool m)
-| Ast.Char _ -> Ast.Bool(char n <= char m)
 | Ast.String _ -> Ast.Bool(string n <= string m)
 | Ast.Int _ -> Ast.Bool(number n <= number m)
 | Ast.Float _ -> Ast.Bool(float n <= float m)
@@ -89,7 +82,6 @@ let le n m = match n with
 
 let gt n m = match n with
 | Ast.Bool _ -> Ast.Bool(bool n > bool m)
-| Ast.Char _ -> Ast.Bool(char n > char m)
 | Ast.String _ -> Ast.Bool(string n > string m)
 | Ast.Int _ -> Ast.Bool(number n > number m)
 | Ast.Float _ -> Ast.Bool(float n > float m)
@@ -97,7 +89,6 @@ let gt n m = match n with
 
 let ge n m = match n with
 | Ast.Bool _ -> Ast.Bool(bool n >= bool m)
-| Ast.Char _ -> Ast.Bool(char n >= char m)
 | Ast.String _ -> Ast.Bool(string n >= string m)
 | Ast.Int _ -> Ast.Bool(number n >= number m)
 | Ast.Float _ -> Ast.Bool(float n >= float m)

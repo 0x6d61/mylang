@@ -5,7 +5,6 @@
 //基本的な値
 %token <int> INT
 %token <string> STRING
-%token <char> CHAR
 %token <bool> BOOL
 %token <float> FLOAT
 %token <string> IDENT
@@ -82,17 +81,16 @@ iff:
 
 
 expr:
+    | LPAREN expr RPAREN {$2}
+    | INT {Int $1}
+    | STRING {String $1}
+    | BOOL {Bool $1}
+    | FLOAT {Float $1}
     | var {$1}
     | iff { $1 }
     | LET var RET expr IN expr {LetInVar($2,$4,$6)}
     | LET var RET expr {LetVar($2,$4)}
     | func { $1 }
-    | LPAREN expr RPAREN {$2}
-    | INT {Int $1}
-    | STRING {String $1}
-    | CHAR {Char $1}
-    | BOOL {Bool $1}
-    | FLOAT {Float $1}
     | expr ADD expr {Add($1,$3)}
     | expr SUB expr {Sub($1,$3)}
     | expr MUL expr {Mul($1,$3)}
